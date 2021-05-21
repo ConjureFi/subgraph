@@ -1,0 +1,41 @@
+type ConjureAsset @entity {
+  id: ID!
+  address : Bytes!
+  collateralAddress: Bytes!
+  lastPrice: BigInt!
+  lastPriceUpdate: BigInt!
+  name: String!
+  symbol: String!
+  created: BigInt!
+  assetType: BigInt!
+  numOracles: BigInt!
+  deploymentPrice: BigInt!
+  collateralizationRatio: BigInt!
+  issueFeeRate: BigInt!
+  totalIssuedSynths: BigInt!
+  totalLoansCreated: BigInt!
+  totalOpenLoanCount: BigInt!
+  owner: Bytes!
+  totalCollateral: BigInt!
+}
+
+type Statistics @entity {
+  id: ID!
+  totalSynthsCreated: BigInt!
+  totalNetCollateral: BigInt!
+  totalLoansTaken: BigInt!
+  totalLoansOpen: BigInt!
+  totalIssuedSynths: BigInt!
+}
+
+type Loans @entity {
+  id: ID!
+  loanID: BigInt!
+  borrower: Bytes!
+  collateralAddress: Bytes!
+  assetAddress: Bytes!
+  loanAmount: BigInt!
+  collateralAmount: BigInt!
+  cRatio: BigInt!
+  loanOpen: Boolean!
+}

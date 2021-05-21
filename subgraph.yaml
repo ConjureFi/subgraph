@@ -1,0 +1,78 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ConjureFactory
+    network: mainnet
+    source:
+      address: "0xcE53384b7ea89039e10B98E9401dd3454e4A9b9c"
+      abi: ConjureFactory
+      startBlock: 12425150
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - ConjureAsset
+        - Statistics
+      abis:
+        - name: ConjureFactory
+          file: ./abis/ConjureFactory.json
+        - name: Conjure
+          file: ./abis/Conjure.json
+        - name: EtherCollateral
+          file: ./abis/EtherCollateral.json
+      eventHandlers:
+        - event: NewConjure(address,address)
+          handler: handleNewConjure
+      file: ./src/factory.ts
+templates:
+    # These data sources templates exist to support the different flags that a token could specify- kind: ethereum/contract
+    - kind: ethereum/contract
+      name: Conjure
+      network: mainnet
+      source:
+        abi: Conjure
+      mapping:
+        kind: ethereum/events
+        apiVersion: 0.0.4
+        language: wasm/assemblyscript
+        file: ./src/conjure.ts
+        entities:
+          - ConjureAsset
+          - Statistics
+        abis:
+          - name: Conjure
+            file: ./abis/Conjure.json
+          - name: EtherCollateral
+            file: ./abis/EtherCollateral.json
+        eventHandlers:
+          - event: Issued(indexed address,uint256)
+            handler: handleTokenIssue
+          - event: Burned(indexed address,uint256)
+            handler: handleTokenBurn
+    # These data sources templates exist to support the different flags that a token could specify- kind: ethereum/contract
+    - kind: ethereum/contract
+      name: EtherCollateral
+      network: mainnet
+      source:
+        abi: EtherCollateral
+      mapping:
+        kind: ethereum/events
+        apiVersion: 0.0.4
+        language: wasm/assemblyscript
+        file: ./src/ethercollateral.ts
+        entities:
+          - ConjureAsset
+          - Statistics
+        abis:
+          - name: Conjure
+            file: ./abis/Conjure.json
+          - name: EtherCollateral
+            file: ./abis/EtherCollateral.json
+        eventHandlers:
+          - event: LoanCreated(indexed address,uint256,uint256)
+            handler: handleLoanCreated
+          - event: LoanClosed(indexed address,uint256)
+            handler: handleLoanClosed
