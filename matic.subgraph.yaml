@@ -1,0 +1,87 @@
+specVersion: 0.0.2
+repository: https://github.com/ConjureFi/subgraph
+
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ConjureFactory
+    network: matic
+    source:
+      address: "0x10EcBAA95Bcc1b73DD790fc9d68E166CD72B2F1C"
+      abi: ConjureFactory
+      startBlock: 14518790
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - ConjureAsset
+        - Statistic
+        - Loan
+      abis:
+        - name: ConjureFactory
+          file: ./abis/ConjureFactory.json
+        - name: Conjure
+          file: ./abis/Conjure.json
+        - name: EtherCollateral
+          file: ./abis/EtherCollateral.json
+      eventHandlers:
+        - event: NewConjure(address,address)
+          handler: handleNewConjure
+      file: ./src/factory.ts
+templates:
+    - kind: ethereum/contract
+      name: Conjure
+      network: matic
+      source:
+        abi: Conjure
+      mapping:
+        kind: ethereum/events
+        apiVersion: 0.0.4
+        language: wasm/assemblyscript
+        file: ./src/conjure.ts
+        entities:
+          - ConjureAsset
+          - Statistic
+          - Loan
+        abis:
+          - name: Conjure
+            file: ./abis/Conjure.json
+          - name: EtherCollateral
+            file: ./abis/EtherCollateral.json
+        eventHandlers:
+          - event: Issued(indexed address,uint256)
+            handler: handleTokenIssue
+          - event: Burned(indexed address,uint256)
+            handler: handleTokenBurn
+    - kind: ethereum/contract
+      name: EtherCollateral
+      network: matic
+      source:
+        abi: EtherCollateral
+      mapping:
+        kind: ethereum/events
+        apiVersion: 0.0.4
+        language: wasm/assemblyscript
+        file: ./src/ethercollateral.ts
+        entities:
+          - ConjureAsset
+          - Statistic
+          - Loan
+        abis:
+          - name: Conjure
+            file: ./abis/Conjure.json
+          - name: EtherCollateral
+            file: ./abis/EtherCollateral.json
+        eventHandlers:
+          - event: LoanCreated(indexed address,uint256,uint256)
+            handler: handleLoanCreated
+          - event: LoanClosed(indexed address,uint256)
+            handler: handleLoanClosed
+          - event: CollateralDeposited(indexed address,uint256,uint256,uint256)
+            handler: handleCollateralDeposited
+          - event: CollateralWithdrawn(indexed address,uint256,uint256,uint256)
+            handler: handleCollateralWithdrawn
+          - event: LoanRepaid(indexed address,uint256,uint256,uint256)
+            handler: handleLoanRepaid
