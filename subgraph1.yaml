@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ConjureFactory
-    network: mainnet
+    network: matic
     source:
-      address: "0xcE53384b7ea89039e10B98E9401dd3454e4A9b9c"
+      address: "0x10EcBAA95Bcc1b73DD790fc9d68E166CD72B2F1C"
       abi: ConjureFactory
-      startBlock: 12425150
+      startBlock: 14518790
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -31,10 +31,9 @@ dataSources:
           handler: handleNewConjure
       file: ./src/factory.ts
 templates:
-    # These data sources templates exist to support the different flags that a token could specify- kind: ethereum/contract
     - kind: ethereum/contract
       name: Conjure
-      network: mainnet
+      network: matic
       source:
         abi: Conjure
       mapping:
@@ -56,10 +55,9 @@ templates:
             handler: handleTokenIssue
           - event: Burned(indexed address,uint256)
             handler: handleTokenBurn
-    # These data sources templates exist to support the different flags that a token could specify- kind: ethereum/contract
     - kind: ethereum/contract
       name: EtherCollateral
-      network: mainnet
+      network: matic
       source:
         abi: EtherCollateral
       mapping:

@@ -19,7 +19,7 @@ type ConjureAsset @entity {
   totalCollateral: BigInt!
 }
 
-type Statistics @entity {
+type Statistic @entity {
   id: ID!
   totalSynthsCreated: BigInt!
   totalNetCollateral: BigInt!
@@ -28,8 +28,9 @@ type Statistics @entity {
   totalIssuedSynths: BigInt!
 }
 
-type Loans @entity {
+type Loan @entity {
   id: ID!
+  symbol: String!
   loanID: BigInt!
   borrower: Bytes!
   collateralAddress: Bytes!

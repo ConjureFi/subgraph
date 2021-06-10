@@ -1,6 +1,6 @@
 import { BigInt, log } from "@graphprotocol/graph-ts"
 import { Conjure, Issued, Burned} from "../generated/ConjureFactory/Conjure"
-import { ConjureAsset, Statistics } from "../generated/schema"
+import { ConjureAsset, Statistic } from "../generated/schema"
 
 
 export function handleTokenIssue(event: Issued): void {
@@ -13,7 +13,7 @@ export function handleTokenIssue(event: Issued): void {
         asset.save()
     }
 
-    let statistic = Statistics.load("1")
+    let statistic = Statistic.load("1")
     statistic.totalIssuedSynths = statistic.totalIssuedSynths.plus(event.params.value)
     statistic.save()
 }
@@ -28,7 +28,7 @@ export function handleTokenBurn(event: Burned): void {
         asset.save()
     }
 
-    let statistic = Statistics.load("1")
+    let statistic = Statistic.load("1")
     statistic.totalIssuedSynths = statistic.totalIssuedSynths.minus(event.params.value)
     statistic.save()
 }

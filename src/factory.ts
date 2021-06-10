@@ -5,7 +5,7 @@ import {
 
 import { Conjure} from "../generated/ConjureFactory/Conjure"
 import { EtherCollateral} from "../generated/ConjureFactory/EtherCollateral"
-import { ConjureAsset, Statistics } from "../generated/schema"
+import { ConjureAsset, Statistic } from "../generated/schema"
 import { Conjure as cnj, EtherCollateral as ethcoll } from "../generated/templates"
 
 export function handleNewConjure(event: NewConjure): void {
@@ -36,10 +36,10 @@ export function handleNewConjure(event: NewConjure): void {
         asset.save()
     }
 
-    let statistic = Statistics.load("1")
+    let statistic = Statistic.load("1")
 
     if(statistic === null) {
-        statistic = new Statistics("1")
+        statistic = new Statistic("1")
         statistic.totalSynthsCreated = BigInt.fromI32(1)
         statistic.totalLoansTaken = BigInt.fromI32(0)
         statistic.totalNetCollateral = BigInt.fromI32(0)
